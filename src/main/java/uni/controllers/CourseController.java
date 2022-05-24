@@ -14,7 +14,7 @@ public class CourseController {
     public void Initialize(Course course) {
         name.setText(course.getName());
         credits.setText(String.valueOf(course.getCredits()));
-        department.setText(course.getDepartment().toString());
+        department.setText(course.getDepartment().getName());
         instructor.setText(course.getInstructor().getName());
         pane.setText("course: " + name.getText());
     }

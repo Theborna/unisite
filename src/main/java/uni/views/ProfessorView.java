@@ -10,7 +10,7 @@ import uni.controllers.ProfessorController;
 import uni.models.Professor;
 
 public class ProfessorView extends Accordion {
-    private static ProfessorView instance;
+    private static ProfessorView instance, professorInstance;
 
     private ProfessorView() {
     }
@@ -21,10 +21,21 @@ public class ProfessorView extends Accordion {
         return instance;
     }
 
-    public void update() throws IOException {
+    public static ProfessorView getProfessorInstance() {
+        if (professorInstance == null)
+            professorInstance = new ProfessorView();
+        return professorInstance;
+    }
+
+    public static ProfessorView copy() throws IOException {
+        return new ProfessorView().update();
+    }
+
+    public ProfessorView update() throws IOException {
         this.getPanes().clear();
         for (Professor professor : Professor.getProfessors())
             this.getPanes().add(Pane(professor));
+        return this;
     }
 
     public TitledPane Pane(Professor professor) throws IOException {

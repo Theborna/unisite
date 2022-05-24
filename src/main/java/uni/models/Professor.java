@@ -2,6 +2,7 @@ package uni.models;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class Professor {
@@ -10,11 +11,14 @@ public class Professor {
     private Department department;
     private AcademicRank rank;
 
-    private static Set<Professor> professors = new HashSet<>();
+    private static Set<Professor> professors = new LinkedHashSet<>();
 
     public Professor(String name) {
         this.name = name;
-        professors.add(this);
+    }
+
+    public static void add(Professor professor) {
+        professors.add(professor);
     }
 
     public static Set<Professor> getProfessors() {
@@ -95,8 +99,8 @@ public class Professor {
     }
 
     public static Professor get(String text) {
-        for(Professor professor : professors)
-            if(professor.getName().equalsIgnoreCase(text))
+        for (Professor professor : professors)
+            if (professor.getName().equalsIgnoreCase(text))
                 return professor;
         return null;
     }

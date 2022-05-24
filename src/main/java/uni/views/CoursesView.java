@@ -1,7 +1,8 @@
 package uni.views;
 
 import java.io.IOException;
-
+import java.util.HashMap;
+import java.util.Map;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.TitledPane;
@@ -10,9 +11,15 @@ import uni.controllers.CourseController;
 import uni.models.Course;
 
 public class CoursesView extends Accordion {
-    private static CoursesView instance;
+    private static CoursesView instance, studentInstance;
+    private Map<TitledPane, Course> courses = new HashMap<>();
 
     private CoursesView() {
+
+    }
+
+    public Map<TitledPane, Course> getCourses() {
+        return courses;
     }
 
     public static CoursesView getInstance() {
@@ -21,10 +28,21 @@ public class CoursesView extends Accordion {
         return instance;
     }
 
-    public void update() throws IOException {
+    public static CoursesView getStudentInstance() {
+        if (studentInstance == null)
+            studentInstance = new CoursesView();
+        return studentInstance;
+    }
+
+    public CoursesView update() throws IOException {
         this.getPanes().clear();
-        for (Course course : Course.getCourses())
-            this.getPanes().add(Pane(course));
+        courses.clear();
+        for (Course course : Course.getCourses()) {
+            TitledPane pane = Pane(course);
+            this.getPanes().add(pane);
+            courses.put(pane, course);
+        }
+        return this;
     }
 
     private TitledPane Pane(Course course) throws IOException {

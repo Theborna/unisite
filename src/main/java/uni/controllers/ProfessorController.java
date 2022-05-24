@@ -28,6 +28,6 @@ public class ProfessorController {
             birth.setValue(birthDate);
         else
             birth.setPromptText("null");
-        pane.setText("student: " + professor.getName());
+        pane.setText("professor: " + professor.getName());
     }
 }

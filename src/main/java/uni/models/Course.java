@@ -18,8 +18,7 @@ public class Course {
     }
 
     public static void add(Course course) {
-        if (courses.add(course))
-            System.out.println("gooz");
+        courses.add(course);
     }
 
     public Course setCredits(int credits) {

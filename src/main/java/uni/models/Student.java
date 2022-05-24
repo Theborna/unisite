@@ -2,6 +2,7 @@ package uni.models;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -10,7 +11,7 @@ public class Student {
     private LocalDate birthDate;
     private Department department;
 
-    private static Set<Student> students = new HashSet<Student>();
+    private static Set<Student> students = new LinkedHashSet<Student>();
 
     public Student(String id) {
         this.id = id;

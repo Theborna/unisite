@@ -1,13 +1,14 @@
 package uni.models;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
 public class Department {
 
     private String name, id;
-    private static Set<Department> departments = new HashSet<Department>();
+    private static Set<Department> departments = new LinkedHashSet<Department>();
 
     public Department(String name) {
         this.name = name;

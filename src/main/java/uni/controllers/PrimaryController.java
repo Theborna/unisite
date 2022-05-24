@@ -1,15 +1,19 @@
 package uni.controllers;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import uni.App;
@@ -26,11 +30,12 @@ import uni.views.StudentsView;
 public class PrimaryController {
 
     @FXML
-    AnchorPane studentLogin, studentView, professorLogin, departmentLogin;
+    AnchorPane studentLogin, studentView, professorLogin, professorView, departmentLogin, departmentView,
+            studentCourseDetails;
     @FXML
     TextField studentName, studentNumber, professorName, professorDepartment, departmentField;
     @FXML
-    Label departmentError, studentError, courseError, profError;
+    Label departmentError, studentError, courseError, profError, studentLoginError, teacherLoginError;
     @FXML
     TextField studentIdField, studentNameField, studentDepartmentField, profNameField, profDepartmentField,
             courseNameField, courseDepartmentField, courseCreditsField, courseInstructorField, departmentNameField,
@@ -40,18 +45,33 @@ public class PrimaryController {
     @FXML
     SplitMenuButton profRank;
     @FXML
-    ScrollPane studentPane, profPane, departmentPane, coursePane;
+    ScrollPane studentPane, profPane, departmentPane, coursePane, allCourses1, allColleagues1;
+
+    private Course selectedCourse = new Course("");
+    private Student loggedStudent;
+    private Professor loggedTeacher;
 
     public void initialize() throws IOException {
         studentPane.setContent(StudentsView.getInstance());
-        profPane.setContent(ProfessorView.getInstance());
         departmentPane.setContent(DepartmentView.getInstance());
+        profPane.setContent(ProfessorView.getInstance());
         coursePane.setContent(CoursesView.getInstance());
+        allCourses1.setContent(CoursesView.getStudentInstance());
+        allColleagues1.setContent(ProfessorView.getProfessorInstance());
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                for (TitledPane pane : CoursesView.getStudentInstance().getPanes())
+                    if (pane.isExpanded())
+                        selectedCourse = (CoursesView.getStudentInstance().getCourses().get(pane));
+            }
+        }, 0, 50);
     }
 
     @FXML
     private void switchToSecondary() throws IOException {
-        App.setRoot("secondary");
+        System.out.println("kiramo bokhor");
     }
 
     @FXML
@@ -60,11 +80,26 @@ public class PrimaryController {
     }
 
     @FXML
-    private void logToStudent() {
-        if (getStudent(studentName.getText(), studentNumber.getText()) != null) {
+    private void logToStudent() throws IOException {
+        if ((loggedStudent = getStudent(studentName.getText(), studentNumber.getText())) == null) {
+            studentLoginError.setText("no such student");
             return;
         }
+        studentLoginError.setText("");
+        CoursesView.getStudentInstance().update();
         switchVisible(studentLogin, studentView);
+    }
+
+    @FXML
+    private void logToProfessor() throws IOException {
+        if ((loggedTeacher = getProfessor(professorName.getText(), professorDepartment.getText())) == null) {
+            teacherLoginError.setText("no such professor");
+            return;
+        }
+        teacherLoginError.setText("");
+        ProfessorView.getProfessorInstance().update();
+        switchVisible(professorLogin, professorView);
+
     }
 
     @FXML
@@ -85,6 +120,7 @@ public class PrimaryController {
         try {
             (new Department(departmentNameField.getText())).setId(departmentIdField.getText());
             DepartmentView.getInstance().update();
+            departmentError.setText("");
         } catch (Exception e) {
             departmentError.setText(e.getMessage());
         }
@@ -97,6 +133,7 @@ public class PrimaryController {
                     .setDepartment(Department.get(studentDepartmentField.getText()))
                     .setBirthDate(studentBirth.getValue());
             StudentsView.getInstance().update();
+            studentError.setText("");
         } catch (Exception e) {
             studentError.setText(e.getMessage());
         }
@@ -109,8 +146,8 @@ public class PrimaryController {
                     (new Course(courseNameField.getText())).setCredits(Integer.parseInt(courseCreditsField.getText()))
                             .setDepartment(Department.get(courseDepartmentField.getText()))
                             .setInstructor(Professor.get(courseInstructorField.getText())));
-            System.out.println(Course.getCourses());
             CoursesView.getInstance().update();
+            courseError.setText("");
         } catch (Exception e) {
             courseError.setText(e.getMessage());
         }
@@ -119,12 +156,19 @@ public class PrimaryController {
     @FXML
     private void addProfessor() {
         try {
-            new Professor(profNameField.getText()).setDepartment(Department.get(profDepartmentField.getText()))
-                    .setBirthDate(profBirth.getValue()).setRank(getRank(profRank.getText()));
+            Professor.add(
+                    new Professor(profNameField.getText()).setDepartment(Department.get(profDepartmentField.getText()))
+                            .setBirthDate(profBirth.getValue()).setRank(getRank(profRank.getText())));
             ProfessorView.getInstance().update();
+            profError.setText("");
         } catch (Exception e) {
             profError.setText(e.getMessage());
         }
+    }
+
+    @FXML
+    private void takeCourse() {
+        loggedStudent.takeCourse(selectedCourse);
     }
 
     private void switchVisible(Pane pane1, Pane pane2) {
@@ -138,6 +182,16 @@ public class PrimaryController {
     }
 
     private Student getStudent(String name, String number) {
+        for (Student student : Student.getStudents())
+            if (student.getName().equals(name) && student.getStudent().equals(number))
+                return student;
+        return null;
+    }
+
+    private Professor getProfessor(String name, String department) {
+        for (Professor professor : Professor.getProfessors())
+            if (professor.getName().equals(name) && professor.getDepartment().getName().equals(department))
+                return professor;
         return null;
     }
 }
