@@ -1,6 +1,7 @@
 package uni.views;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Accordion;
@@ -10,7 +11,7 @@ import uni.controllers.ProfessorController;
 import uni.models.Professor;
 
 public class ProfessorView extends Accordion {
-    private static ProfessorView instance, professorInstance;
+    private static ProfessorView instance, professorInstance, facultyInstance;
 
     private ProfessorView() {
     }
@@ -27,13 +28,23 @@ public class ProfessorView extends Accordion {
         return professorInstance;
     }
 
+    public static ProfessorView getFacultyInstance() {
+        if (facultyInstance == null)
+            facultyInstance = new ProfessorView();
+        return facultyInstance;
+    }
+
     public static ProfessorView copy() throws IOException {
         return new ProfessorView().update();
     }
 
     public ProfessorView update() throws IOException {
+        return update(Professor.getProfessors());
+    }
+
+    public ProfessorView update(Collection<Professor> professors) throws IOException {
         this.getPanes().clear();
-        for (Professor professor : Professor.getProfessors())
+        for (Professor professor : professors)
             this.getPanes().add(Pane(professor));
         return this;
     }

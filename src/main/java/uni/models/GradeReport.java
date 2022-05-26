@@ -1,13 +1,26 @@
 package uni.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GradeReport {
     private Student student;
     private Course course;
     private double grade;
 
+    private static List<GradeReport> grades = new ArrayList<GradeReport>();
+
     public GradeReport(Student student, Course course) {
         this.student = student;
         this.course = course;
+    }
+
+    public static List<GradeReport> getGrades() {
+        return grades;
+    }
+
+    public void addGrade() {
+        grades.add(this);
     }
 
     @Override
@@ -27,7 +40,8 @@ public class GradeReport {
         return grade;
     }
 
-    public void setGrade(double grade) {
+    public GradeReport setGrade(double grade) {
         this.grade = grade;
+        return this;
     }
 }

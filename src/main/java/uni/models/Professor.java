@@ -17,8 +17,8 @@ public class Professor {
         this.name = name;
     }
 
-    public static void add(Professor professor) {
-        professors.add(professor);
+    public void add() {
+        professors.add(this);
     }
 
     public static Set<Professor> getProfessors() {
@@ -26,12 +26,28 @@ public class Professor {
     }
 
     public Set<Course> getCourse() {
-        // TOOD: kos
-        return null;
+        Set<Course> courses = new LinkedHashSet<>();
+        for (Course course : Course.getCourses())
+            if (course.getInstructor().equals(this))
+                courses.add(course);
+        return courses;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((birthDate == null) ? 0 : birthDate.hashCode());
+        result = prime * result + ((department == null) ? 0 : department.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((rank == null) ? 0 : rank.hashCode());
+        return result;
     }
 
     @Override
     public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
         if (obj == null)
             return false;
         if (getClass() != obj.getClass())
@@ -52,10 +68,7 @@ public class Professor {
                 return false;
         } else if (!name.equals(other.name))
             return false;
-        if (rank == null) {
-            if (other.rank != null)
-                return false;
-        } else if (!rank.equals(other.rank))
+        if (rank != other.rank)
             return false;
         return true;
     }

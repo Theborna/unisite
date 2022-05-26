@@ -1,6 +1,7 @@
 package uni.models;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -15,6 +16,9 @@ public class Student {
 
     public Student(String id) {
         this.id = id;
+    }
+
+    public void addStudent() {
         students.add(this);
     }
 
@@ -23,21 +27,31 @@ public class Student {
     }
 
     public void takeCourse(Course course) {
-        // TODO: kos
+        new GradeReport(this, course).addGrade();
     }
 
     public void finishCourse(Course course, double score) {
-        // TODO: kos
+        if (score < 0 || score > 20)
+            throw new IllegalArgumentException("score must be between 0 and 20");
+        for (GradeReport report : GradeReport.getGrades())
+            if (report.getStudent().equals(this) && report.getCourse().equals(course))
+                report.setGrade(score);
     }
 
     public List<GradeReport> getGradeReport() {
-        // TODO: kos
-        return null;
+        ArrayList<GradeReport> report = new ArrayList<GradeReport>();
+        for (GradeReport grade : GradeReport.getGrades())
+            if (grade.getStudent().equals(this))
+                report.add(grade);
+        return report;
     }
 
     public List<Course> getCourses() {
-        // TODO: kos
-        return null;
+        List<Course> courses = new ArrayList<Course>();
+        List<GradeReport> reports = getGradeReport();
+        for (GradeReport report : reports)
+            courses.add(report.getCourse());
+        return courses;
     }
 
     public String getStudent() {
@@ -72,7 +86,17 @@ public class Student {
     }
 
     @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
     public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
         if (obj == null)
             return false;
         if (getClass() != obj.getClass())

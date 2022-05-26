@@ -1,17 +1,23 @@
 package uni.views;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
+import javafx.scene.layout.VBox;
 import uni.App;
 import uni.controllers.CourseController;
 import uni.models.Course;
+import uni.models.GradeReport;
+import uni.models.Student;
 
 public class CoursesView extends Accordion {
-    private static CoursesView instance, studentInstance;
+    private static CoursesView instance, studentInstance, currentStudentCoursesInstance, offeredCourses,
+            departmentOfferedCourses;
     private Map<TitledPane, Course> courses = new HashMap<>();
 
     private CoursesView() {
@@ -34,13 +40,49 @@ public class CoursesView extends Accordion {
         return studentInstance;
     }
 
+    public static CoursesView getCurrentStudentCoursesInstance() {
+        if (currentStudentCoursesInstance == null)
+            currentStudentCoursesInstance = new CoursesView();
+        return currentStudentCoursesInstance;
+    }
+
+    public static CoursesView getOfferedCourses() {
+        if (offeredCourses == null)
+            offeredCourses = new CoursesView();
+        return offeredCourses;
+    }
+
+    public static CoursesView getDepartmentOfferedCourses() {
+        if (departmentOfferedCourses == null)
+            departmentOfferedCourses = new CoursesView();
+        return departmentOfferedCourses;
+    }
+
     public CoursesView update() throws IOException {
+        return update(Course.getCourses());
+    }
+
+    public CoursesView update(Collection<Course> courses) throws IOException {
         this.getPanes().clear();
-        courses.clear();
-        for (Course course : Course.getCourses()) {
+        this.courses.clear();
+        for (Course course : courses) {
             TitledPane pane = Pane(course);
             this.getPanes().add(pane);
-            courses.put(pane, course);
+            this.courses.put(pane, course);
+        }
+        return this;
+    }
+
+    public CoursesView addScore(Student student) {
+        for (TitledPane pane : getPanes()) {
+            Label item = new Label("score"), score = new Label();
+            for (GradeReport report : student.getGradeReport())
+                if (report.getCourse().equals(courses.get(pane))) {
+                    score.setText(String.valueOf(report.getGrade()));
+                    break;
+                }
+            item.setOpacity(0.65);
+            ((VBox) pane.getContent()).getChildren().addAll(item, score);
         }
         return this;
     }

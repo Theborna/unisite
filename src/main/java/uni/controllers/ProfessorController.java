@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
+import javafx.scene.text.Text;
 import uni.models.Professor;
 
 public class ProfessorController {
@@ -15,6 +16,8 @@ public class ProfessorController {
     DatePicker birth;
     @FXML
     TitledPane pane;
+    @FXML
+    Text courses;
 
     public void initialize(Professor professor) {
         name.setText(professor.getName());
@@ -29,5 +32,8 @@ public class ProfessorController {
         else
             birth.setPromptText("null");
         pane.setText("professor: " + professor.getName());
+        courses.setText(professor.getCourse().toString().replaceAll("\\[|\\]", ""));
+        if (courses.getText().length() == 0)
+            courses.setText("none");
     }
 }

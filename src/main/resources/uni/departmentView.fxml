@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitMenuButton?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="department" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uni.controllers.DepartmentManagerController">
+    <children>
+        <SplitPane dividerPositions="0.24238782051282048, 0.477764423076923" layoutX="400.0" layoutY="193.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <items>
+                <BorderPane prefHeight="200.0" prefWidth="200.0">
+                    <top>
+                        <VBox prefWidth="100.0" BorderPane.alignment="CENTER">
+                            <children>
+                                <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Faculty" textFill="#9f9f9f">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <Separator prefWidth="200.0" />
+                            </children>
+                        </VBox>
+                    </top>
+                    <center>
+                        <ScrollPane fx:id="Faculty" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                    </center>
+                    <bottom>
+                        <VBox prefHeight="200.0" prefWidth="239.0" BorderPane.alignment="CENTER">
+                            <children>
+                                <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="120.0" text="Proffesor" textFill="#000000aa">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <Separator prefWidth="200.0" />
+                                <Label alignment="CENTER" maxWidth="1.7976931348623157E308" opacity="0.65" text="necessary" underline="true">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="profName" promptText="proffesor name" />
+                                <Separator prefHeight="0.0" prefWidth="303.0" />
+                                <Label alignment="CENTER" maxWidth="1.7976931348623157E308" opacity="0.65" text="optional">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <SplitMenuButton fx:id="profRank" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="professor">
+                                    <items>
+                                        <MenuItem fx:id="profRank1" mnemonicParsing="false" onAction="#setProfRank" text="Professor" />
+                                        <MenuItem fx:id="profRank2" mnemonicParsing="false" onAction="#setProfRank" text="Associate professor" />
+                                        <MenuItem fx:id="profRank3" mnemonicParsing="false" onAction="#setProfRank" text="Assistant professor" />
+                                    </items>
+                                </SplitMenuButton>
+                                <DatePicker fx:id="profBirth" maxWidth="1.7976931348623157E308" promptText="birth date" />
+                                <Label fx:id="profError" maxWidth="1.7976931348623157E308" textFill="RED" />
+                                <Button alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addProfessor" prefHeight="58.0" prefWidth="303.0" text="create" />
+                            </children>
+                        </VBox>
+                    </bottom>
+                </BorderPane>
+                <BorderPane prefHeight="200.0" prefWidth="200.0">
+                    <top>
+                        <VBox prefWidth="100.0" BorderPane.alignment="CENTER">
+                            <children>
+                                <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Courses offered" textFill="#9f9f9f">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <Separator prefHeight="0.0" prefWidth="242.0" />
+                            </children>
+                        </VBox>
+                    </top>
+                    <center>
+                        <ScrollPane fx:id="offeredCourses" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                    </center>
+                    <bottom>
+                        <VBox prefHeight="200.0" prefWidth="229.0" spacing="7.0" BorderPane.alignment="CENTER">
+                            <children>
+                                <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="354.0" text="Course" textFill="#000000aa">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <Separator prefWidth="200.0" />
+                                <TextField fx:id="courseName" promptText="course name" />
+                                <TextField fx:id="courseCredits" promptText="credits" />
+                                <TextField fx:id="courseInstructor" promptText="instructor" />
+                                <Label fx:id="courseError" maxWidth="1.7976931348623157E308" textFill="RED" />
+                                <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addCourse" prefHeight="39.0" prefWidth="229.0" text="create">
+                                    <VBox.margin>
+                                        <Insets />
+                                    </VBox.margin>
+                                </Button>
+                            </children>
+                        </VBox>
+                    </bottom>
+                </BorderPane>
+                <BorderPane prefHeight="200.0" prefWidth="200.0">
+                    <top>
+                        <VBox BorderPane.alignment="CENTER">
+                            <children>
+                                <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Students" textFill="#9f9f9f">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <Separator prefHeight="0.0" prefWidth="326.0" />
+                        <Button alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#logToDepartment" text="logout" />
+                            </children>
+                        </VBox>
+                    </top>
+                    <bottom>
+                        <VBox prefHeight="240.0" prefWidth="518.0" BorderPane.alignment="CENTER">
+                            <children>
+                        <AnchorPane prefHeight="59.0" prefWidth="518.0">
+                           <children>
+                              <Label fx:id="studentStatus" maxWidth="1.7976931348623157E308" opacity="0.65" prefHeight="40.0" prefWidth="518.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="studentButton" layoutX="381.6000061035156" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#studentAction" prefHeight="38.0" prefWidth="140.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                        <Separator prefWidth="200.0" />
+                                <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="14.0" prefWidth="518.0" text="Student" textFill="#000000aa">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <Separator prefHeight="30.0" prefWidth="479.0" />
+                                <Label alignment="CENTER" maxWidth="1.7976931348623157E308" opacity="0.65" text="necessary" underline="true">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="studentName" promptText="student name" />
+                                <TextField fx:id="studentId" promptText="student id" />
+                                <Label alignment="CENTER" maxWidth="1.7976931348623157E308" opacity="0.65" text="optional">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <DatePicker fx:id="studentBirth" maxWidth="1.7976931348623157E308" promptText="birth date" />
+                                <Label fx:id="studentError" maxWidth="1.7976931348623157E308" textFill="RED" />
+                                <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addStudent" prefHeight="85.0" prefWidth="326.0" text="create" />
+                            </children>
+                        </VBox>
+                    </bottom>
+                    <center>
+                        <ScrollPane fx:id="studentsPane" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                    </center>
+                </BorderPane>
+            </items>
+        </SplitPane>
+    </children>
+</AnchorPane>
